@@ -1,9 +1,7 @@
 # name=Alesis V25
 
-import midi
 import transport
 import device
-import utils
 
 
 current_mode = None
