@@ -1,5 +1,5 @@
 # Alesis V25
-![Layout](Layout.png)
+![Layout](layout.png)
 Source: Screenshot of Alesis V25 Editor
 
 ## Features
