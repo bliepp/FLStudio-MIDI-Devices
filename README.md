@@ -2,7 +2,7 @@
 Custom MIDI devices for FL Studio using the MIDI Scripting Device API
 
 ## Installation
-### Fl Studio MIDI Scripts
+### FL Studio MIDI Scripts
 Download the repository and copy the folder of your controller to the folder named `Settings/Hardware` in the user data folder. By default it's:
 ```bash
 Windows:    C:\Users\USER\Documents\Image-Line\FL Studio\Settings\Hardware
