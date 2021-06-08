@@ -12,7 +12,7 @@ The Alesis V25 is a MIDI keyboard with
 * mod wheel
 
 ## Instalaltion
-Install the script (`device_Alesis_V25.py`) to the user data folder as described in the main `README.md`. Next send `firmware_config.v25` to the controller using the manufacturers utility [Alesis V25 Editor](https://alesis.com/products/view2/v25).
+Install the script (`device_Alesis_V25.py`) to the user data folder as described in the main `README.md`. Next send `configuration.v25` to the controller using the manufacturers utility [Alesis V25 Editor](https://alesis.com/products/view2/v25).
 
 ## Overall changes
 The velocity curves are adjsuted to make it feel more responsive.
