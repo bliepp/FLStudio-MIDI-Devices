@@ -31,9 +31,9 @@ This mode can be activated with switch 1. It maps the drum pads the following wa
 * Pad 3: stop
 * Pad 4: record
 * Pad 5: metronome
-* Pad 6-8: deactivated to prevent unwanted triggering
-
-Adding functionality to the Pads 6-8 (like loop recording, overdubbing) is currently on the to do list. 
+* Pad 6: wait for input to start playing
+* Pad 7: countdown before recording
+* Pad 8: loop recording
 
 ### FPC Mode - Switch 2
 The FPC Mode remaps the drum pads to play the notes with default FPC settings. It maps the drum pads the following way:

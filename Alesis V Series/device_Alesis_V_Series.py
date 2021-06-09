@@ -43,34 +43,40 @@ class TransportMode(Mode):
         super().__init__()
         self.map = {
             # default values of first pad row
-            PAD[0]: lambda: transport.globalTransport(midi.FPT_Loop, 1),        # pattern/song mode
-            PAD[1]: lambda: transport.globalTransport(midi.FPT_Play, 1),        # play/pause
-            PAD[2]: lambda: transport.globalTransport(midi.FPT_Stop, 1),        # stop
-            PAD[3]: lambda: transport.globalTransport(midi.FPT_Record, 1),      # recording
-            PAD[4]: lambda: transport.globalTransport(midi.FPT_Metronome, 1),   # metronome
+            PAD[0]: lambda: transport.globalTransport(midi.FPT_Loop, 1),            # pattern/song mode
+            PAD[1]: lambda: transport.globalTransport(midi.FPT_Play, 1),            # play/pause
+            PAD[2]: lambda: transport.globalTransport(midi.FPT_Stop, 1),            # stop
+            PAD[3]: lambda: transport.globalTransport(midi.FPT_Record, 1),          # recording
+            PAD[4]: lambda: transport.globalTransport(midi.FPT_Metronome, 1),       # metronome
+            PAD[5]: lambda: transport.globalTransport(midi.FPT_WaitForInput, 1),    # wait for input
+            PAD[6]: lambda: transport.globalTransport(midi.FPT_CountDown, 1),       # countdown before recording
+            PAD[7]: lambda: transport.globalTransport(midi.FPT_LoopRecord, 1),      # loop recording
         }
         
     def set_lights(self):
         if device.isAssigned():
-            if transport.getLoopMode():
-                device.midiOutMsg(144, 9, PAD[0], 127)
-            else:
-                device.midiOutMsg(128, 9, PAD[0], 0)
+            switch = lambda cond: (144*cond + 128*(not cond), 127*cond)
             
-            if transport.isPlaying():
-                device.midiOutMsg(144, 9, PAD[1], 127)
-            else:
-                device.midiOutMsg(128, 9, PAD[1], 0)
-            
-            if transport.isRecording():
-                device.midiOutMsg(144, 9, PAD[3], 127)
-            else:
-                device.midiOutMsg(128, 9, PAD[3], 0)
-            
-            if ui.isMetronomeEnabled():
-                device.midiOutMsg(144, 9, PAD[4], 127)
-            else:
-                device.midiOutMsg(128, 9, PAD[4], 0)
+            status, velocity = switch(transport.getLoopMode())
+            device.midiOutMsg(status, 9, PAD[0], velocity)
+
+            status, velocity = switch(transport.isPlaying())
+            device.midiOutMsg(status, 9, PAD[1], velocity)
+
+            status, velocity = switch(transport.isRecording())
+            device.midiOutMsg(status, 9, PAD[3], velocity)
+
+            status, velocity = switch(ui.isMetronomeEnabled())
+            device.midiOutMsg(status, 9, PAD[4], velocity)
+
+            status, velocity = switch(ui.isStartOnInputEnabled())
+            device.midiOutMsg(status, 9, PAD[5], velocity)
+
+            status, velocity = switch(ui.isPrecountEnabled())
+            device.midiOutMsg(status, 9, PAD[6], velocity)
+
+            status, velocity = switch(ui.isLoopRecEnabled())
+            device.midiOutMsg(status, 9, PAD[7], velocity)
 
     def OnNoteOn(self, event):
         if event.midiChan == self.padsChan:
