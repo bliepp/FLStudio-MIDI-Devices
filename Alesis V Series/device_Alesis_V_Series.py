@@ -2,6 +2,8 @@
 
 import transport
 import device
+import ui
+import midi
 
 
 current_mode = None
@@ -15,14 +17,14 @@ PAD = [ # factory drum pad layout
 
 class Mode():
     def __init__(self):
-        print("Entering ", self.__class__.__name__)
+        ui.setHintMsg("Alesis V Series: " + self.__class__.__name__.replace("M", " M"))
         self.padsChan = 9
         self.lights_off()
         self.set_lights()
     
     def lights_off(self):
         if device.isAssigned():
-            for i in range(7):
+            for i in range(len(PAD)):
                 device.midiOutMsg(128, 9, PAD[i], 0)
 
     def set_lights(self):
@@ -41,12 +43,13 @@ class TransportMode(Mode):
         super().__init__()
         self.map = {
             # default values of first pad row
-            PAD[0]: transport.setLoopMode,  # pattern/song mode
-            PAD[1]: transport.start,        # play/pause
-            PAD[2]: transport.stop,         # stop
-            PAD[3]: transport.record,       # recording
+            PAD[0]: lambda: transport.globalTransport(midi.FPT_Loop, 1),        # pattern/song mode
+            PAD[1]: lambda: transport.globalTransport(midi.FPT_Play, 1),        # play/pause
+            PAD[2]: lambda: transport.globalTransport(midi.FPT_Stop, 1),        # stop
+            PAD[3]: lambda: transport.globalTransport(midi.FPT_Record, 1),      # recording
+            PAD[4]: lambda: transport.globalTransport(midi.FPT_Metronome, 1),   # metronome
         }
-    
+        
     def set_lights(self):
         if device.isAssigned():
             if transport.getLoopMode():
@@ -63,6 +66,11 @@ class TransportMode(Mode):
                 device.midiOutMsg(144, 9, PAD[3], 127)
             else:
                 device.midiOutMsg(128, 9, PAD[3], 0)
+            
+            if ui.isMetronomeEnabled():
+                device.midiOutMsg(144, 9, PAD[4], 127)
+            else:
+                device.midiOutMsg(128, 9, PAD[4], 0)
 
     def OnNoteOn(self, event):
         if event.midiChan == self.padsChan:
@@ -89,12 +97,28 @@ class FPCMode(Mode):
 
     def OnNoteOn(self, event):
         if event.midiChan == self.padsChan:
-            event.data1 = self.map[event.data1]
+            event.data1 = self.map.get(event.data1, 0)
         else: super().OnNoteOn(event)
     
     def OnNoteOff(self, event):
         if event.midiChan == self.padsChan:
             event.data1 = self.map[event.data1]
+        else: super().OnNoteOff(event)
+
+
+class TapTempoMode(Mode):
+    def __init__(self):
+        super().__init__()
+
+    def OnNoteOn(self, event):
+        if event.midiChan == self.padsChan:
+            transport.globalTransport(midi.FPT_TapTempo, 1)
+            event.handled = True
+        else: super().OnNoteOn(event)
+    
+    def OnNoteOff(self, event):
+        if event.midiChan == self.padsChan:
+            event.handled = True
         else: super().OnNoteOff(event)
 
 
@@ -107,7 +131,7 @@ class DeactivatedMode(Mode):
             event.handled = True # ignore pads
         else: super().OnNoteOn(event)
     
-    def OnNoteOn(self, event):
+    def OnNoteOff(self, event):
         if event.midiChan == self.padsChan:
             event.handled = True # ignore pads
         else: super().OnNoteOff(event)
@@ -116,7 +140,8 @@ class DeactivatedMode(Mode):
 modes = { # map buttons to modes
     48: TransportMode,
     49: FPCMode,
-    50: DeactivatedMode,
+    50: TapTempoMode,
+    51: DeactivatedMode,
 }
 
 
