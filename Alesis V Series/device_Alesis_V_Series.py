@@ -1,4 +1,4 @@
-# name=Alesis V25
+# name=Alesis V Series
 
 import transport
 import device
@@ -34,19 +34,6 @@ class Mode():
     
     def OnNoteOff(self, event):
         pass
-
-
-class FPCMode(Mode):
-    def __init__(self):
-        super().__init__()
-        self.map = {
-            PAD[0]: 49, PAD[1]: 42, PAD[2]: 44, PAD[3]: 46,
-            PAD[4]: 36, PAD[5]: 38, PAD[6]: 40, PAD[7]: 37, 
-        }
-
-    def OnNoteOn(self, event):
-        if event.midiChan == self.padsChan:
-            event.data1 = self.map[event.data1]
 
 
 class TransportMode(Mode):
@@ -92,9 +79,44 @@ class TransportMode(Mode):
         else: super().OnNoteOff(event)
 
 
+class FPCMode(Mode):
+    def __init__(self):
+        super().__init__()
+        self.map = {
+            PAD[0]: 49, PAD[1]: 42, PAD[2]: 44, PAD[3]: 46,
+            PAD[4]: 36, PAD[5]: 38, PAD[6]: 40, PAD[7]: 37, 
+        }
+
+    def OnNoteOn(self, event):
+        if event.midiChan == self.padsChan:
+            event.data1 = self.map[event.data1]
+        else: super().OnNoteOn(event)
+    
+    def OnNoteOff(self, event):
+        if event.midiChan == self.padsChan:
+            event.data1 = self.map[event.data1]
+        else: super().OnNoteOff(event)
+
+
+class DeactivatedMode(Mode):
+    def __init__(self):
+        super().__init__()
+
+    def OnNoteOn(self, event):
+        if event.midiChan == self.padsChan:
+            event.handled = True # ignore pads
+        else: super().OnNoteOn(event)
+    
+    def OnNoteOn(self, event):
+        if event.midiChan == self.padsChan:
+            event.handled = True # ignore pads
+        else: super().OnNoteOff(event)
+
+
 modes = { # map buttons to modes
     48: TransportMode,
     49: FPCMode,
+    50: DeactivatedMode,
 }
 
 
