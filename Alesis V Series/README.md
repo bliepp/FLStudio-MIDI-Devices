@@ -50,4 +50,4 @@ The FPC Mode remaps the drum pads to play the notes with default FPC settings. I
 Use any drum pad to tap the tempo. Beware: The change is instantanious!
 
 ### Deactivated Mode - Switch 4
-The Deactivated Mode deactivates the drum pads to prevent accidentally triggering. The pads kan now be used to rest your left hand on it.
+The Deactivated Mode deactivates the drum pads to prevent accidentally triggering. The pads can now be used to rest your left hand on it.
