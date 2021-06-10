@@ -5,7 +5,7 @@ Source: Screenshot of Alesis V25 Editor
 ## List of controllers
 Since the Alesis V25, the Alesis V49 and the Alesis V61 are basically the same controller only differing in the number of keys only one device script is needed.
 
-__Right now the configuration for the V49 and the V61 are missing. This isn't a problem as it's basically the default configuration with the switches set to momentary mode instead of toggle mode as well as linear velocity curve for the keys and drum pads (Curve 1).__
+__Right now the configurations for the V49 and the V61 are untestet. This isn't a problem as they are basically the default configurations with the switches set to momentary mode instead of toggle mode as well as linear velocity curve for the keys and drum pads (Curve 1).__
 
 ## Features
 The controllers from the Alesis V Series are a MIDI keyboards with
