@@ -16,7 +16,7 @@ The controllers from the Alesis V Series are a MIDI keyboards with
 * pitch wheel
 * mod wheel
 
-## Instalaltion
+## Installation
 Install the script (`device_Alesis_V_Series.py`) to the user data folder as described in the main `README.md`. Next send the configuration file (`configuration.vXX`) to the controller using the manufacturers utility ([Alesis V25 Editor](https://alesis.com/products/view2/v25)/[Alesis V49 Editor](https://alesis.com/products/view2/v49)/[Alesis V61 Editor](https://alesis.com/products/view2/v61)).
 
 ## Overall settings
@@ -46,7 +46,7 @@ The FPC Mode remaps the drum pads to play the notes with default FPC settings. I
 * Pad 7: Snare 2
 * Pad 8: SideStick
 
-### TapTempo Mode - Switch 4
+### TapTempo Mode - Switch 3
 Use any drum pad to tap the tempo. Beware: The change is instantanious!
 
 ### Deactivated Mode - Switch 4
