@@ -1,0 +1,3 @@
+[submodule "Alesis V Series"]
+	path = Alesis V Series
+	url = git@github.com:bliepp/Alesis-V-Series-for-FL-Studio.git
